@@ -3,10 +3,16 @@ import math
 
 class Data(object):
     # initialization of class
-    def __init__(self):
+    def __init__(self,q):
         self.quantity_of_lines = 0
-        self.avg = [0, 0, 0]
-        self.standard_deviation = [0, 0, 0]
+        self.columns_quantity = q
+        self.avg = []
+        self.standard_deviation = []
+        i = 0
+        while i < q:
+            self.avg.append(0)
+            self.standard_deviation.append(0)
+            i += 1
 
     # calculating average of each column
     def calc_avg(self, list):
@@ -22,7 +28,7 @@ class Data(object):
             i += 1
 
 
-    # calculating standard deviation
+    # calculating standard deviation of each column
     def calc_deviation(self, list):
         for row in list:
             i = 0
@@ -30,7 +36,7 @@ class Data(object):
                 temp = math.pow((float(item) - self.avg[i]), 2)
                 self.standard_deviation[i] = self.standard_deviation[i] + temp
                 i += 1
-                if i == 2:
+                if i == self.columns_quantity - 1:
                     break
         i = 0
         while i < len(self.standard_deviation) - 1:
@@ -45,5 +51,5 @@ class Data(object):
             for item in row:
                 row[i] = (float(row[i]) - self.avg[i]) / self.standard_deviation[i]
                 i += 1
-                if i == 2:
+                if i == self.columns_quantity - 1:
                     break
