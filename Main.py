@@ -37,7 +37,9 @@ for row in data_list:
 
 # creating neural network
 NN = NeuralNetwork.NeuralNet(input_temp,output_temp)
+print("Learning has started:")
 NN.create_and_train_nn(quantity_of_columns)
+
 
 # input for the user
 print("Enter data [%]:")
