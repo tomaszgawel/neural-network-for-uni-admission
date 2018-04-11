@@ -19,7 +19,7 @@ class NeuralNet(object):
             pr.append([-2, 2])
             i += 1
         self.net = nl.net.newff(pr, [columns-1, 6, 1])
-        err = self.net.train(self.input, self.output, show=1)
+        err = self.net.train(self.input, self.output, epochs=10000, show=3, goal=0.0001)
 
     # method that returns output of the network using user's input
     def test(self, test_arr):

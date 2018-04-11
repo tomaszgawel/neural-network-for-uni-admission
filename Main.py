@@ -45,7 +45,7 @@ test_input = []
 i = 0
 for item in columns_names:
     if i+1 == len(columns_names):
-        test_input.append(float(1))
+        test_input.append(int(1))
         break
     print(item+": ")
     x = input()
@@ -63,4 +63,5 @@ data2.normalize(data_input)
 
 # testing user input
 out = NN.test([data_input[len(data_input)-1][:-1]])
-print(str(round(out[0][0], 2)*100)+"%")
+print("Chances of getting into university:")
+print(str(int(round(out[0][0],2)*100))+"%")
