@@ -1,5 +1,6 @@
 import neurolab as nl
 import numpy as np
+import matplotlib.pyplot as mp
 
 
 class NeuralNet(object):
@@ -24,3 +25,4 @@ class NeuralNet(object):
     # method that returns output of the network using user's input
     def test(self, test_arr):
         return self.net.sim(test_arr)
+

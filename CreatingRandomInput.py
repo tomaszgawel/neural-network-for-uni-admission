@@ -4,7 +4,7 @@ file.writelines("Math(Basic),Math(Advanced),English(Basic),English(Advanced),Pas
 threshold = 0
 for x in range(500):
     if x%200 == 0:
-        threshold = random.randint(700, 900)
+        threshold = random.randint(550, 700)
     Mb = random.randint(30,100)
     Ma = random.randint(30,100)
     Ab = random.randint(30,100)

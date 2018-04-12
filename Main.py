@@ -1,6 +1,7 @@
 import DataNormalization
 import DataController
 import NeuralNetwork
+import PyplotGraphs
 
 # loading data
 columns_names = []
@@ -8,11 +9,15 @@ data_list = []
 DataController.load_data_list("data/results.csv", data_list, columns_names)
 data_list = DataController.clear_outliners(data_list,columns_names)
 quantity_of_columns = len(columns_names)
-
+print("Data size: "+str(len(data_list)))
 # copying data for input
 data_input = []
 for row in data_list:
     data_input.append(list(row))
+
+# creating histograms representing data
+PyplotGraphs.create_input_graphs(data_list, columns_names, quantity_of_columns)
+
 
 # normalization of data
 data = DataNormalization.Data(quantity_of_columns)
