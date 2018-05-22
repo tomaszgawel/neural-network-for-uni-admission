@@ -1,6 +1,6 @@
 import neurolab as nl
 import numpy as np
-import matplotlib.pyplot as mp
+import pandas as pd
 
 
 class NeuralNet(object):
@@ -13,16 +13,18 @@ class NeuralNet(object):
     # creating neural network with w 3 layers using neurolab library
     # quantity of columns - 1 neurons in input layer, 6 in hidden layer and 1 in output layer
     # training neural network
-    def create_and_train_nn(self, columns):
+    def create_and_train_nn(self, columns, col_names):
         i = 0
         pr = []
         while i < columns - 1:
             pr.append([-2, 2])
             i += 1
-        self.net = nl.net.newff(pr, [columns-1, 6, 1])
+        self.net = nl.net.newff(pr, [columns - 1, 6, 1])
         err = self.net.train(self.input, self.output, epochs=300, show=20, goal=0.01)
+        self.net.save("data/network.net")
+
 
     # method that returns output of the network using user's input
     def test(self, test_arr):
-        return self.net.sim(test_arr)
+        return self.net.predict(test_arr)
 

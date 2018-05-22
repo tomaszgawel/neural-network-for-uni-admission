@@ -6,7 +6,7 @@ import PyplotGraphs
 # loading data
 columns_names = []
 data_list = []
-DataController.load_data_list("data/results.csv", data_list, columns_names)
+DataController.load_data_list("data/data.csv", data_list, columns_names)
 data_list = DataController.clear_outliners(data_list,columns_names)
 quantity_of_columns = len(columns_names)
 print("Data size: "+str(len(data_list)))
@@ -18,12 +18,13 @@ for row in data_list:
 # creating histograms representing data
 PyplotGraphs.create_input_graphs(data_list, columns_names, quantity_of_columns)
 
-
 # normalization of data
 data = DataNormalization.Data(quantity_of_columns)
 data.calc_avg(data_list)
 data.calc_deviation(data_list)
 data.normalize(data_list)
+
+DataController.saveNormalizedData(data_list,columns_names)
 
 # splitting data into input and output list
 input_temp = []
@@ -40,10 +41,14 @@ for row in data_list:
     input_temp.append(temp)
     temp = []
 
+
+# for row in input_temp:
+#     print(row)
+
 # creating neural network
 NN = NeuralNetwork.NeuralNet(input_temp,output_temp)
 print("Learning has started:")
-NN.create_and_train_nn(quantity_of_columns)
+NN.create_and_train_nn(quantity_of_columns,columns_names)
 
 
 # input for the user
@@ -71,4 +76,4 @@ data2.normalize(data_input)
 # testing user input
 out = NN.test([data_input[len(data_input)-1][:-1]])
 print("Chances of getting into university:")
-print(str(int(round(out[0][0],2)*100))+"%")
+print(out)
