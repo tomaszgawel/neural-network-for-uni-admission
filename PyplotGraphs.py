@@ -7,9 +7,10 @@ def create_input_graphs(input, titles, quantity):
     while k < quantity - 1:
         for row in input:
             temp_list.append(row[k])
+        plt.clf()
         plt.hist(temp_list, 50, facecolor='b')
         plt.title(titles[k])
-        plt.xlabel("Result (%)")
+        plt.xlabel("Result")
         plt.ylabel("Number of people")
         plt.savefig("graphs/"+str(k)+".png")
         temp_list = []

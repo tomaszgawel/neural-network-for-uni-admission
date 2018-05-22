@@ -15,7 +15,7 @@ def load_data_list(path, list, columns_n):
             if columns_names:
                 row = row.split(",")
                 for item in row:
-                    columns_n.append(item)
+                    columns_n.append(str(item))
                 columns_names = False
                 continue
             row = row.split(",")
@@ -57,3 +57,14 @@ def clear_outliners(list, column_names):
         k = k+1
         shuffle(list)
     return list
+
+def saveNormalizedData(data, columns):
+    with open("data\data_nor.csv", "w",  newline='\n') as csvfile:
+        with open("data\out.csv", "w", newline='\n') as out:
+            csvwriter = csv.writer(csvfile)
+            outwriter = csv.writer(out)
+            for row in data:
+                outwriter.writerow([int(row[-1])])
+                csvwriter.writerow(row[:-1])
+    out.close()
+    csvfile.close()
