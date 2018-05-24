@@ -6,11 +6,17 @@ import NeuralNetwork
 import PyplotGraphs
 import MainView
 import Controller
+import LearnDialog
+import threading
 
 class Ui_Form(object):
     def setupUi(self, Form):
         self.mainApp = QtWidgets.QApplication(sys.argv)
         self.mainForm = QtWidgets.QWidget()
+
+        self.DialogApp = QtWidgets.QApplication(sys.argv)
+        self.DialogForm = QtWidgets.QWidget()
+
         self.form = Form
         Form.setObjectName("Form")
         Form.resize(400, 159)
@@ -54,14 +60,18 @@ class Ui_Form(object):
 
 
     def loadButton(self):
-        net = NeuralNetwork.LoadedNeuralNet
         options = QtWidgets.QFileDialog.Options()
         options |= QtWidgets.QFileDialog.DontUseNativeDialog
         files, _ = QtWidgets.QFileDialog.getOpenFileNames()
         path = str(QtCore.QDir.toNativeSeparators(files[0]))
-        net.load_neural_network(path)
 
 
     def learnButton(self):
-        MainView.showMainWindow(self.mainApp, self.mainForm)
+        ui = MainView.Main_Form()
+        mainThread = threading.Thread(target=MainView.showMainWindow(self.mainApp, self.mainForm, ui))
+        mainThread.start()
+        dialogThread = threading.Thread(target=LearnDialog.showDialog(self.DialogApp, self.DialogForm))
+        dialogThread.start()
+        mainThread.join()
+        dialogThread.join()
         self.form.hide()

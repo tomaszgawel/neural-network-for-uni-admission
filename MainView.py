@@ -1,16 +1,23 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 import MainView
+import LearnDialog
 import Controller
 import sys
 import threading
 
 class Main_Form(object):
     def __init__(self):
+        netThread = threading.Thread(target=self.target())
+        netThread.start()
+        netThread.join()
+
+    def target(self):
         self.controller = Controller.Control()
         self.controller.load_data()
         self.controller.normalize_data()
         self.controller.split_data()
         self.controller.create_and_learn_naural_net()
+
 
     def setupUi(self, Form):
         self.controller = None
@@ -75,6 +82,7 @@ class Main_Form(object):
         self.pushButton.clicked.connect(self.check_action)
         Form.show()
 
+
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
         Form.setWindowTitle(_translate("Form", "Form"))
@@ -90,11 +98,9 @@ class Main_Form(object):
         self.controller.copy_data()
         self.controller.add_user_input_into_data(110, 4.5, 1)
         self.controller.normalize_data()
-        print()
         self.label_5.setText(str(self.controller.test_user_input()))
 
-def showMainWindow(app, Form):
-    ui = Main_Form()
+def showMainWindow(app, Form, ui):
     ui.setupUi(Form)
     app.exec_()
 
