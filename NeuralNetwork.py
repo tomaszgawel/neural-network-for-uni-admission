@@ -20,7 +20,7 @@ class NeuralNet(object):
             pr.append([-2, 2])
             i += 1
         self.net = nl.net.newff(pr, [columns - 1, 6, 1])
-        err = self.net.train(self.input, self.output, epochs=300, show=20, goal=0.01)
+        err = self.net.train(self.input, self.output, epochs=30, show=20, goal=0.01)
         self.net.save("data/network.net")
 
 
@@ -28,3 +28,13 @@ class NeuralNet(object):
     def test(self, test_arr):
         return self.net.predict(test_arr)
 
+
+class LoadedNeuralNet(object):
+    def __init__(self):
+        self.net = None
+
+    def load_neural_network(self, path):
+        self.net = nl.load(path)
+
+    def test(self, test_arr):
+        return self.net.predict(test_arr)

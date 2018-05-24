@@ -1,15 +1,19 @@
-# -*- coding: utf-8 -*-
-
-# Form implementation generated from reading ui file 'MainView.ui'
-#
-# Created by: PyQt5 UI code generator 5.10.1
-#
-# WARNING! All changes made in this file will be lost!
-
 from PyQt5 import QtCore, QtGui, QtWidgets
+import MainView
+import Controller
+import sys
+import threading
 
-class Ui_Form(object):
+class Main_Form(object):
+    def __init__(self):
+        self.controller = Controller.Control()
+        self.controller.load_data()
+        self.controller.normalize_data()
+        self.controller.split_data()
+        self.controller.create_and_learn_naural_net()
+
     def setupUi(self, Form):
+        self.controller = None
         Form.setObjectName("Form")
         Form.resize(522, 252)
         self.lineEdit = QtWidgets.QLineEdit(Form)
@@ -68,6 +72,8 @@ class Ui_Form(object):
 
         self.retranslateUi(Form)
         QtCore.QMetaObject.connectSlotsByName(Form)
+        self.pushButton.clicked.connect(self.check_action)
+        Form.show()
 
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
@@ -79,13 +85,17 @@ class Ui_Form(object):
         self.label_5.setText(_translate("Form", "..."))
         self.pushButton.setText(_translate("Form", "CHECK"))
 
+    def check_action(self):
+        self.controller.data.clear()
+        self.controller.copy_data()
+        self.controller.add_user_input_into_data(110, 4.5, 1)
+        self.controller.normalize_data()
+        print()
+        self.label_5.setText(str(self.controller.test_user_input()))
 
-if __name__ == "__main__":
-    import sys
-    app = QtWidgets.QApplication(sys.argv)
-    Form = QtWidgets.QWidget()
-    ui = Ui_Form()
+def showMainWindow(app, Form):
+    ui = Main_Form()
     ui.setupUi(Form)
-    Form.show()
-    sys.exit(app.exec_())
+    app.exec_()
+
 
