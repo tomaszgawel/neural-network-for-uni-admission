@@ -1,7 +1,17 @@
+import sys
 from PyQt5 import QtCore, QtGui, QtWidgets
+import DataNormalization
+import DataController
+import NeuralNetwork
+import PyplotGraphs
+import MainView
+import Controller
 
 class Ui_Form(object):
     def setupUi(self, Form):
+        self.mainApp = QtWidgets.QApplication(sys.argv)
+        self.mainForm = QtWidgets.QWidget()
+        self.form = Form
         Form.setObjectName("Form")
         Form.resize(400, 159)
         self.pushButton = QtWidgets.QPushButton(Form)
@@ -31,6 +41,9 @@ class Ui_Form(object):
 
         self.retranslateUi(Form)
         QtCore.QMetaObject.connectSlotsByName(Form)
+        Form.show()
+        self.pushButton.clicked.connect(self.loadButton)
+        self.pushButton_2.clicked.connect(self.learnButton)
 
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
@@ -40,12 +53,15 @@ class Ui_Form(object):
         self.label.setText(_translate("Form", "Choose what you want to do"))
 
 
-if __name__ == "__main__":
-    import sys
-    app = QtWidgets.QApplication(sys.argv)
-    Form = QtWidgets.QWidget()
-    ui = Ui_Form()
-    ui.setupUi(Form)
-    Form.show()
-    sys.exit(app.exec_())
+    def loadButton(self):
+        net = NeuralNetwork.LoadedNeuralNet
+        options = QtWidgets.QFileDialog.Options()
+        options |= QtWidgets.QFileDialog.DontUseNativeDialog
+        files, _ = QtWidgets.QFileDialog.getOpenFileNames()
+        path = str(QtCore.QDir.toNativeSeparators(files[0]))
+        net.load_neural_network(path)
 
+
+    def learnButton(self):
+        MainView.showMainWindow(self.mainApp, self.mainForm)
+        self.form.hide()
