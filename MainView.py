@@ -1,4 +1,6 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtCore import pyqtSlot
+
 import MainView
 import Controller
 import sys
@@ -7,13 +9,8 @@ import threading
 class Main_Form(object):
     def __init__(self):
         self.controller = Controller.Control()
-        self.controller.load_data()
-        self.controller.normalize_data()
-        self.controller.split_data()
-        self.controller.create_and_learn_naural_net()
 
     def setupUi(self, Form):
-        self.controller = None
         Form.setObjectName("Form")
         Form.resize(522, 252)
         self.lineEdit = QtWidgets.QLineEdit(Form)
@@ -69,11 +66,12 @@ class Main_Form(object):
         self.pushButton = QtWidgets.QPushButton(Form)
         self.pushButton.setGeometry(QtCore.QRect(200, 150, 121, 28))
         self.pushButton.setObjectName("pushButton")
-
         self.retranslateUi(Form)
         QtCore.QMetaObject.connectSlotsByName(Form)
         self.pushButton.clicked.connect(self.check_action)
         Form.show()
+
+
 
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
@@ -86,16 +84,21 @@ class Main_Form(object):
         self.pushButton.setText(_translate("Form", "CHECK"))
 
     def check_action(self):
-        self.controller.data.clear()
         self.controller.copy_data()
-        self.controller.add_user_input_into_data(110, 4.5, 1)
+        print([self.lineEdit.text(), self.lineEdit_2.text(), self.lineEdit_3.text()])
+        self.controller.add_user_input_into_data(self.lineEdit.text(), self.lineEdit_2.text(), self.lineEdit_3.text())
         self.controller.normalize_data()
-        print()
-        self.label_5.setText(str(self.controller.test_user_input()))
+        print(str(self.controller.test_user_input()))
+        # self.label_5.setText()
 
-def showMainWindow(app, Form):
-    ui = Main_Form()
-    ui.setupUi(Form)
-    app.exec_()
+    def initialize(self):
+        self.controller.load_data()
+        self.controller.normalize_data()
+        self.controller.split_data()
+        self.controller.create_and_learn_naural_net()
+
+    def load_network(self,path):
+        self.controller.NN.load_neural_network(path)
+
 
 

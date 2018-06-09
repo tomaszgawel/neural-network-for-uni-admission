@@ -1,14 +1,11 @@
 import sys
 from PyQt5 import QtCore, QtGui, QtWidgets
-import DataNormalization
-import DataController
-import NeuralNetwork
-import PyplotGraphs
 import MainView
-import Controller
+import threading
 
 class Ui_Form(object):
     def setupUi(self, Form):
+        self.MainView = MainView.Main_Form()
         self.mainApp = QtWidgets.QApplication(sys.argv)
         self.mainForm = QtWidgets.QWidget()
         self.form = Form
@@ -54,14 +51,22 @@ class Ui_Form(object):
 
 
     def loadButton(self):
-        net = NeuralNetwork.LoadedNeuralNet
         options = QtWidgets.QFileDialog.Options()
         options |= QtWidgets.QFileDialog.DontUseNativeDialog
         files, _ = QtWidgets.QFileDialog.getOpenFileNames()
-        path = str(QtCore.QDir.toNativeSeparators(files[0]))
-        net.load_neural_network(path)
+        # path = str(QtCore.QDir.toNativeSeparators(files[0]))
+        self.MainView.load_network(files[0])
+        self.form.hide()
+        self.form = QtWidgets.QWidget()
+        self.MainView.setupUi(self.form)
+
 
 
     def learnButton(self):
-        MainView.showMainWindow(self.mainApp, self.mainForm)
+        # learnThread = threading.Thread(target=)
+        # learnThread.start()
+        # learnThread.join()
+        self.MainView.initialize()
         self.form.hide()
+        self.form = QtWidgets.QWidget()
+        self.MainView.setupUi(self.form)
