@@ -59,4 +59,8 @@ class Control(object):
         self.data.append([float(gpe), float(gre), float(prestige)])
 
     def test_user_input(self):
+        print([self.data[len(self.data)-1][:-1]])
         return self.NN.test([self.data[len(self.data)-1][:-1]])
+
+    def test(self):
+        print("hej")
