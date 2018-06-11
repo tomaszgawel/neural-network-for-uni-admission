@@ -9,10 +9,12 @@ import threading
 class Main_Form(object):
     def __init__(self):
         self.controller = Controller.Control()
+        self.indexOfGraph = 0
 
     def setupUi(self, Form):
         Form.setObjectName("Form")
-        Form.resize(522, 252)
+        Form.resize(511, 658)
+        Form.setWindowIcon(QtGui.QIcon('data\icon.png'))
         self.lineEdit = QtWidgets.QLineEdit(Form)
         self.lineEdit.setGeometry(QtCore.QRect(40, 100, 121, 31))
         self.lineEdit.setText("")
@@ -66,29 +68,58 @@ class Main_Form(object):
         self.pushButton = QtWidgets.QPushButton(Form)
         self.pushButton.setGeometry(QtCore.QRect(200, 150, 121, 28))
         self.pushButton.setObjectName("pushButton")
+        self.scrollArea = QtWidgets.QScrollArea(Form)
+        self.scrollArea.setGeometry(QtCore.QRect(0, 250, 511, 380))
+        self.scrollArea.setWidgetResizable(True)
+        self.scrollArea.setObjectName("scrollArea")
+        self.scrollAreaWidgetContents = QtWidgets.QWidget()
+        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 509, 380))
+        self.scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")
+        self.label_6 = QtWidgets.QLabel(self.scrollAreaWidgetContents)
+        self.label_6.setGeometry(QtCore.QRect(0, 0, 511, 383))
+        self.label_6.setObjectName("label_6")
+        self.scrollArea.setWidget(self.scrollAreaWidgetContents)
+        self.pushButton_2 = QtWidgets.QPushButton(Form)
+        self.pushButton_2.setGeometry(QtCore.QRect(0, 630, 93, 28))
+        self.pushButton_2.setObjectName("pushButton_2")
+        self.pushButton_3 = QtWidgets.QPushButton(Form)
+        self.pushButton_3.setGeometry(QtCore.QRect(418, 630, 93, 28))
+        self.pushButton_3.setObjectName("pushButton_3")
         self.retranslateUi(Form)
         QtCore.QMetaObject.connectSlotsByName(Form)
+
+        self.graph = QtGui.QPixmap("graphs/0.png")
+        self.label_6.setPixmap(self.graph.scaled(511,383,
+                                                 QtCore.Qt.KeepAspectRatio, QtCore.Qt.SmoothTransformation))
+        self.pushButton_2.setEnabled(False)
         self.pushButton.clicked.connect(self.check_action)
+        self.pushButton_2.clicked.connect(self.prevButton)
+        self.pushButton_3.clicked.connect(self.nextButton)
         Form.show()
 
 
 
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
-        Form.setWindowTitle(_translate("Form", "Form"))
+        Form.setWindowTitle(_translate("Form", "NeuroUni"))
         self.label.setText(_translate("Form", "Test your results"))
-        self.label_2.setText(_translate("Form", "GPA"))
-        self.label_3.setText(_translate("Form", "GRE"))
+        self.label_2.setText(_translate("Form", "GRE"))
+        self.label_3.setText(_translate("Form", "GPA"))
         self.label_4.setText(_translate("Form", "PRESTIGE"))
         self.label_5.setText(_translate("Form", "..."))
         self.pushButton.setText(_translate("Form", "CHECK"))
+        self.label_6.setText(_translate("Form", ""))
+        self.pushButton_2.setText(_translate("Form", "Prev"))
+        self.pushButton_3.setText(_translate("Form", "Next"))
 
     def check_action(self):
         self.controller.copy_data()
-        print([self.lineEdit.text(), self.lineEdit_2.text(), self.lineEdit_3.text()])
         self.controller.add_user_input_into_data(self.lineEdit.text(), self.lineEdit_2.text(), self.lineEdit_3.text())
+        self.lineEdit.setText("")
+        self.lineEdit_2.setText("")
+        self.lineEdit_3.setText("")
         self.controller.normalize_data()
-        out = (self.controller.test_user_input())
+        out = self.controller.test_user_input()
         self.label_5.setText("You have "+(str(int(round(out[0][0],2)*100))+"%")+" chance!")
 
     def initialize(self):
@@ -98,4 +129,36 @@ class Main_Form(object):
         self.controller.create_and_learn_naural_net()
 
     def load_network(self,path):
-        self.controller.NN.load_neural_network(path)
+        self.controller.load_network(path)
+
+    def nextButton(self):
+        if self.indexOfGraph == 0:
+            self.indexOfGraph = 1
+            self.graph = QtGui.QPixmap("graphs/1.png")
+            self.label_6.setPixmap(self.graph.scaled(511, 383,
+                                                     QtCore.Qt.KeepAspectRatio, QtCore.Qt.SmoothTransformation))
+            self.pushButton_2.setEnabled(True)
+            self.pushButton_3.setEnabled(True)
+        elif self.indexOfGraph == 1:
+            self.indexOfGraph = 2
+            self.graph = QtGui.QPixmap("graphs/2.png")
+            self.label_6.setPixmap(self.graph.scaled(511, 383,
+                                                     QtCore.Qt.KeepAspectRatio, QtCore.Qt.SmoothTransformation))
+            self.pushButton_2.setEnabled(True)
+            self.pushButton_3.setEnabled(False)
+
+    def prevButton(self):
+        if self.indexOfGraph == 1:
+            self.indexOfGraph = 0
+            self.graph = QtGui.QPixmap("graphs/0.png")
+            self.label_6.setPixmap(self.graph.scaled(511, 383,
+                                                     QtCore.Qt.KeepAspectRatio, QtCore.Qt.SmoothTransformation))
+            self.pushButton_2.setEnabled(False)
+            self.pushButton_3.setEnabled(True)
+        elif self.indexOfGraph == 2:
+            self.indexOfGraph = 1
+            self.graph = QtGui.QPixmap("graphs/1.png")
+            self.label_6.setPixmap(self.graph.scaled(511, 383,
+                                                     QtCore.Qt.KeepAspectRatio, QtCore.Qt.SmoothTransformation))
+            self.pushButton_2.setEnabled(True)
+            self.pushButton_3.setEnabled(True)

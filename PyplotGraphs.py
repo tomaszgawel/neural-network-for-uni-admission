@@ -8,7 +8,7 @@ def create_input_graphs(input, titles, quantity):
         for row in input:
             temp_list.append(row[k])
         plt.clf()
-        plt.hist(temp_list, 50, facecolor='b')
+        plt.hist(temp_list, 50, facecolor="#27aae1")
         plt.title(titles[k])
         plt.xlabel("Result")
         plt.ylabel("Number of people")

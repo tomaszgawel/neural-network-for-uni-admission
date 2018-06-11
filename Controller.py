@@ -52,12 +52,16 @@ class Control(object):
             temp = []
 
     def create_and_learn_naural_net(self):
-        self.NN = NeuralNetwork.NeuralNet(self.input, self.output)
+        self.NN = NeuralNetwork.NeuralNet()
         print("Learning has started:")
-        self.NN.create_and_train_nn(self.quantity_of_columns, self.columns_names)
+        self.NN.create_and_train_nn(self.quantity_of_columns, self.input, self.output)
 
     def add_user_input_into_data(self, gpe, gre, prestige):
         self.data.append([float(gpe), float(gre), float(prestige), 0.0])
 
     def test_user_input(self):
         return self.NN.test([self.data[len(self.data)-1][:-1]])
+
+    def load_network(self,path):
+        self.NN = NeuralNetwork.NeuralNet()
+        self.NN.load_neural_network(path)
