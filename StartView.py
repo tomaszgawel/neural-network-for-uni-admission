@@ -10,6 +10,7 @@ class Ui_Form(object):
         self.form = Form
         Form.setObjectName("Form")
         Form.resize(400, 159)
+        Form.setWindowIcon(QtGui.QIcon('data\icon.png'))
         self.pushButton = QtWidgets.QPushButton(Form)
         self.pushButton.setGeometry(QtCore.QRect(50, 90, 131, 28))
         font = QtGui.QFont()
@@ -35,15 +36,17 @@ class Ui_Form(object):
         self.label.setFont(font)
         self.label.setObjectName("label")
 
+
         self.retranslateUi(Form)
         QtCore.QMetaObject.connectSlotsByName(Form)
+
         Form.show()
         self.pushButton.clicked.connect(self.loadButton)
         self.pushButton_2.clicked.connect(self.learnButton)
 
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
-        Form.setWindowTitle(_translate("Form", "Form"))
+        Form.setWindowTitle(_translate("Form", "Menu"))
         self.pushButton.setText(_translate("Form", "Load neural network"))
         self.pushButton_2.setText(_translate("Form", "Start learning"))
         self.label.setText(_translate("Form", "Choose what you want to do"))
@@ -55,9 +58,9 @@ class Ui_Form(object):
         files, _ = QtWidgets.QFileDialog.getOpenFileNames()
         path = str(QtCore.QDir.toNativeSeparators(files[0]))
         self.form.hide()
+        self.MainView.controller.load_data()
         self.form = QtWidgets.QWidget()
         self.MainView.setupUi(self.form)
-        self.MainView.controller.load_data()
         self.MainView.controller.normalize_data()
         self.MainView.controller.split_data()
         self.MainView.controller.load_network(path)
