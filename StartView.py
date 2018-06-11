@@ -1,7 +1,6 @@
 import sys
 from PyQt5 import QtCore, QtGui, QtWidgets
 import MainView
-import threading
 
 class Ui_Form(object):
     def setupUi(self, Form):
@@ -63,9 +62,6 @@ class Ui_Form(object):
 
 
     def learnButton(self):
-        # learnThread = threading.Thread(target=)
-        # learnThread.start()
-        # learnThread.join()
         self.MainView.initialize()
         self.form.hide()
         self.form = QtWidgets.QWidget()
