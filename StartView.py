@@ -53,13 +53,14 @@ class Ui_Form(object):
         options = QtWidgets.QFileDialog.Options()
         options |= QtWidgets.QFileDialog.DontUseNativeDialog
         files, _ = QtWidgets.QFileDialog.getOpenFileNames()
-        # path = str(QtCore.QDir.toNativeSeparators(files[0]))
-        self.MainView.load_network(files[0])
+        path = str(QtCore.QDir.toNativeSeparators(files[0]))
         self.form.hide()
         self.form = QtWidgets.QWidget()
         self.MainView.setupUi(self.form)
-
-
+        self.MainView.controller.load_data()
+        self.MainView.controller.normalize_data()
+        self.MainView.controller.split_data()
+        self.MainView.controller.load_network(path)
 
     def learnButton(self):
         self.MainView.initialize()

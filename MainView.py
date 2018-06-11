@@ -85,11 +85,18 @@ class Main_Form(object):
 
     def check_action(self):
         self.controller.copy_data()
-        print([self.lineEdit.text(), self.lineEdit_2.text(), self.lineEdit_3.text()])
         self.controller.add_user_input_into_data(self.lineEdit.text(), self.lineEdit_2.text(), self.lineEdit_3.text())
+        print([self.controller.data[len(self.controller.data) - 1][:-1]])
+        self.lineEdit.setText("")
+        self.lineEdit_2.setText("")
+        self.lineEdit_3.setText("")
+        print("hej")
         self.controller.normalize_data()
+        print("hej")
         out = (self.controller.test_user_input())
+        print("hej")
         self.label_5.setText("You have "+(str(int(round(out[0][0],2)*100))+"%")+" chance!")
+        print("hej")
 
     def initialize(self):
         self.controller.load_data()
@@ -98,4 +105,4 @@ class Main_Form(object):
         self.controller.create_and_learn_naural_net()
 
     def load_network(self,path):
-        self.controller.NN.load_neural_network(path)
+        self.controller.load_network(path)
