@@ -11,6 +11,7 @@ class Control(object):
         self.output = []
         self.columns_names = []
         self.quantity_of_columns = None
+        self.NN = None
 
     def load_data(self):
         self.data.clear()
@@ -56,8 +57,7 @@ class Control(object):
         self.NN.create_and_train_nn(self.quantity_of_columns, self.columns_names)
 
     def add_user_input_into_data(self, gpe, gre, prestige):
-        self.data.append([float(gpe), float(gre), float(prestige)])
+        self.data.append([float(gpe), float(gre), float(prestige), 0.0])
 
     def test_user_input(self):
-        print([self.data[len(self.data)-1][:-1]])
         return self.NN.test([self.data[len(self.data)-1][:-1]])

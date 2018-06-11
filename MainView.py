@@ -88,8 +88,8 @@ class Main_Form(object):
         print([self.lineEdit.text(), self.lineEdit_2.text(), self.lineEdit_3.text()])
         self.controller.add_user_input_into_data(self.lineEdit.text(), self.lineEdit_2.text(), self.lineEdit_3.text())
         self.controller.normalize_data()
-        print(str(self.controller.test_user_input()))
-        # self.label_5.setText()
+        out = (self.controller.test_user_input())
+        self.label_5.setText("You have "+(str(int(round(out[0][0],2)*100))+"%")+" chance!")
 
     def initialize(self):
         self.controller.load_data()
@@ -99,6 +99,3 @@ class Main_Form(object):
 
     def load_network(self,path):
         self.controller.NN.load_neural_network(path)
-
-
-
