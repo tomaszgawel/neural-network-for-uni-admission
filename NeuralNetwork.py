@@ -1,6 +1,5 @@
 import neurolab as nl
 import numpy as np
-import pandas as pd
 
 
 class NeuralNet(object):
@@ -20,7 +19,7 @@ class NeuralNet(object):
             pr.append([-2, 2])
             i += 1
         self.net = nl.net.newff(pr, [columns - 1, 9, 9, 9, 9, 9, 1])
-        err = self.net.train(self.input, self.output, epochs=60, show=20, goal=0.01)
+        err = self.net.train(self.input, self.output, epochs=40, show=20, goal=0.01)
         self.net.save("data/network.net")
 
     def load_neural_network(self, path):

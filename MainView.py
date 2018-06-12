@@ -1,10 +1,5 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtCore import pyqtSlot
-
-import MainView
 import Controller
-import sys
-import threading
 
 class Main_Form(object):
     def __init__(self):
@@ -113,14 +108,21 @@ class Main_Form(object):
         self.pushButton_3.setText(_translate("Form", "Next"))
 
     def check_action(self):
-        self.controller.copy_data()
-        self.controller.add_user_input_into_data(self.lineEdit.text(), self.lineEdit_2.text(), self.lineEdit_3.text())
-        self.lineEdit.setText("")
-        self.lineEdit_2.setText("")
-        self.lineEdit_3.setText("")
-        self.controller.normalize_data()
-        out = self.controller.test_user_input()
-        self.label_5.setText("You have "+(str(int(round(out[0][0],2)*100))+"%")+" chance!")
+        if self.lineEdit.text() == "" or self.lineEdit_2.text() =="" or self.lineEdit_3.text() =="":
+            self.label_5.setText("<font color='Red'>Fill all fields</font>")
+        else:
+            try:
+                self.controller.copy_data()
+                self.controller.add_user_input_into_data(self.lineEdit.text(), self.lineEdit_2.text(), self.lineEdit_3.text())
+                self.lineEdit.setText("")
+                self.lineEdit_2.setText("")
+                self.lineEdit_3.setText("")
+                self.controller.normalize_data()
+                out = self.controller.test_user_input()
+                self.label_5.setText("You have "+(str(int(round(out[0][0],2)*100))+"%")+" chance!")
+            except:
+                self.label_5.setText("<font color='Red'>Wrong format</font>")
+
 
     def initialize(self):
         self.controller.load_data()

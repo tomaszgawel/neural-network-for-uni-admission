@@ -1,6 +1,7 @@
 import sys
 from PyQt5 import QtCore, QtGui, QtWidgets
 import MainView
+import threading
 
 class Ui_Form(object):
     def setupUi(self, Form):
@@ -35,11 +36,8 @@ class Ui_Form(object):
         font.setWeight(50)
         self.label.setFont(font)
         self.label.setObjectName("label")
-
-
         self.retranslateUi(Form)
         QtCore.QMetaObject.connectSlotsByName(Form)
-
         Form.show()
         self.pushButton.clicked.connect(self.loadButton)
         self.pushButton_2.clicked.connect(self.learnButton)
@@ -53,20 +51,25 @@ class Ui_Form(object):
 
 
     def loadButton(self):
-        options = QtWidgets.QFileDialog.Options()
-        options |= QtWidgets.QFileDialog.DontUseNativeDialog
-        files, _ = QtWidgets.QFileDialog.getOpenFileNames()
-        path = str(QtCore.QDir.toNativeSeparators(files[0]))
-        self.form.hide()
-        self.MainView.controller.load_data()
-        self.form = QtWidgets.QWidget()
-        self.MainView.setupUi(self.form)
-        self.MainView.controller.normalize_data()
-        self.MainView.controller.split_data()
-        self.MainView.controller.load_network(path)
+        try:
+            options = QtWidgets.QFileDialog.Options()
+            options |= QtWidgets.QFileDialog.DontUseNativeDialog
+            files, _ = QtWidgets.QFileDialog.getOpenFileNames()
+            path = str(QtCore.QDir.toNativeSeparators(files[0]))
+            self.form.hide()
+            self.MainView.controller.load_data()
+            self.form = QtWidgets.QWidget()
+            self.MainView.setupUi(self.form)
+            self.MainView.controller.normalize_data()
+            self.MainView.controller.split_data()
+            self.MainView.controller.load_network(path)
+        except:
+            print("Wrong neural network path")
 
     def learnButton(self):
-        self.MainView.initialize()
+        learnThread = threading.Thread(target=self.MainView.initialize())
+        learnThread.start()
+        learnThread.join()
         self.form.hide()
         self.form = QtWidgets.QWidget()
         self.MainView.setupUi(self.form)
